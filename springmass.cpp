@@ -230,7 +230,7 @@ void SpringMass::step(double dt)
   Vector2 g(0, -gravity) ;
   for (std::vector<Mass *>::iterator it = begin(mass_list); it != end (mass_list); ++it)
   {
-    (*it) -> setForce(g);
+    (*it) -> setForce(g * (*it)->getMass());
   } 
   
 
