@@ -91,3 +91,27 @@
 
 
 
+# Task 18: Understand how this is implemented by using inheritance.
+
+1. Which objects are of type Simulation and which of type Drawable? 
+- BallDrawable is of type Ball which is of type Simulation. Thus BallDrawable is a simulation 
+- BallDrawable is of type Drawable.
+
+
+2. Which objects are creating an instance of Figure and when?
+- BallDrawable creates an instance of Figure using initialization list when it is first constructed.
+
+
+3. Which objects are added as Drawable to the figure and when?
+- BallDrawable is added as Drawable to figure during its default construction. 
+
+4. Which objects implement respectively: display, draw, and update? 
+- display is a virtual function in simulation, which is later overwritten in Ball, and now overwritten in BallDrawable.  
+- draw is implemented in both BallDrawable and in Figure. when draw() is called in figure, it loops over all objects it has and call the draw() function from those objects, in this case, the BallDrawable.
+- update is implemented in Figure, which is called from display in BallDrawable. during 'run', BallDrawable is passed in as simulation, and its display() is called. since BallDrawable overwrites teh display() function, it instead calls update from Figure.
+
+
+5. Which different purposes do these functions serve?
+- BallDrawable() is the constructor of this class
+- draw() calls the function in Figure to draw in figure. 
+- display() calls the update() function in figure to update the drawing. 
