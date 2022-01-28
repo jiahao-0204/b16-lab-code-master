@@ -24,13 +24,18 @@ class SpringMassDrawable : public SpringMass, public Drawable {
     void draw() {
 
       // draw mass
-      for (std::vector<Mass *>::iterator it = begin(mass_list); it != end (mass_list); ++it) {
+      for (std::vector<Mass *>::iterator it = mass_list.begin() ; it != end (mass_list); ++it) {
+        
         // position and radius
-        Vector2 position = (*it)->getPosition();
-        double r = (*it)->getRadius();
+        Vector3 position = (*it)->getPosition();
+        double x = position.x;
+        double y = position.y;
+        double z = position.z;
+
+        double r_scaled = (*it)->getScaledR();
         
         // draw
-        figure.drawCircle(position.x, position.y, r) ;
+        figure.drawCircle(x, y, r_scaled) ;
       }
       
       // draw spring
@@ -39,8 +44,8 @@ class SpringMassDrawable : public SpringMass, public Drawable {
         Mass * m1 = (*it).getMass1();
         Mass * m2 = (*it).getMass2();
 
-        Vector2 p1 = m1->getPosition();
-        Vector2 p2 = m2->getPosition();
+        Vector3 p1 = m1->getPosition();
+        Vector3 p2 = m2->getPosition();
 
         // thickness
         double thickness = (*it).getStiffness();
@@ -83,9 +88,9 @@ int main(int argc, char** argv) {
   // mass
   const double mass = 1 ;
   const double radius = 0.1 ;
-  Mass * m1 = new Mass(Vector2(-0.5,0), Vector2(0, 0), mass, radius) ;
-  Mass * m2 = new Mass(Vector2(+0.5,0), Vector2(1, 2), mass, radius) ; // need destructor
-  Mass * m3 = new Mass(Vector2(+0.5,0.5), Vector2(0, 0), mass, radius) ; // need destructor
+  Mass * m1 = new Mass(Vector3(-0.5,0,0), Vector3(0, 0, 0), mass, radius) ;
+  Mass * m2 = new Mass(Vector3(+0.5,0,0), Vector3(1, 2, 0), mass, radius) ; // need destructor
+  Mass * m3 = new Mass(Vector3(+0.5,0.5,0), Vector3(0, 0, 0), mass, radius) ; // need destructor
   
   // spring
   const double naturalLength = 0.5;
@@ -93,7 +98,7 @@ int main(int argc, char** argv) {
   const double damping = 1;
   Spring spring1(m1, m2, naturalLength, 0, 0) ;
   Spring spring2(m2, m3, naturalLength, 1, 0) ;
-  Spring spring3(m3, m1, naturalLength, 1, 0) ;
+  Spring spring3(m3, m1, naturalLength, 0, 0) ;
 
   // spring vector
   std::vector<Spring> more_springs(1, spring1);

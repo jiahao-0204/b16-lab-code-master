@@ -13,27 +13,26 @@
 
 Mass::Mass() : position(), velocity(), force(), mass(1), radius(1) {}
 
-Mass::Mass(Vector2 position, Vector2 velocity, double mass, double radius) 
-: position(position), velocity(velocity), force(), mass(mass), radius(radius), xmin(-1),xmax(1),ymin(-1),ymax(1) {}
+Mass::Mass(Vector3 position, Vector3 velocity, double mass, double radius) 
+: position(position), velocity(velocity), force(), mass(mass), radius(radius), xmin(-1),xmax(1),ymin(-1),ymax(1),zmin(-1),zmax(1) {}
 
-
-void Mass::setForce(Vector2 f) {
+void Mass::setForce(Vector3 f) {
   force = f ;
 }
 
-void Mass::addForce(Vector2 f) {
+void Mass::addForce(Vector3 f) {
   force = force + f ;
 }
 
-Vector2 Mass::getForce() const {
+Vector3 Mass::getForce() const {
   return force ;
 }
 
-Vector2 Mass::getPosition() const {
+Vector3 Mass::getPosition() const {
   return position ;
 }
 
-Vector2 Mass::getVelocity() const {
+Vector3 Mass::getVelocity() const {
   return velocity ;
 }
 
@@ -64,8 +63,8 @@ void Mass::step(double dt) {
   
   // new position and velocity
   // assuming constant acceleration
-  Vector2 end_position = position + velocity * dt + 0.5 * force / mass * dt * dt; 
-  Vector2 end_velocity = velocity + force / mass * dt; 
+  Vector3 end_position = position + velocity * dt + 0.5 * force / mass * dt * dt; 
+  Vector3 end_velocity = velocity + force / mass * dt; 
 
   // x direction
   if (xmin <= end_position.x - radius && end_position.x + radius <= xmax) {
@@ -83,6 +82,24 @@ void Mass::step(double dt) {
     velocity.y = - velocity.y;
   }
 
+  // z direction
+  if (zmin <= end_position.z - radius && end_position.z + radius <= zmax) {
+    position.z = end_position.z;
+    velocity.z = end_velocity.z;
+  } else {
+    velocity.z = - velocity.z;
+  }
+}
+
+double Mass::getScaledR() {
+  double z = position.z;
+
+  double rmin = 0.5 * radius;
+  double rmax = 1.5 * radius;
+
+  double scaled_r = (z - zmin) / (zmax - zmin) * (rmax - rmin) + rmin;
+
+  return scaled_r;
 }
 
 /* ---------------------------------------------------------------- */
@@ -101,28 +118,28 @@ Mass * Spring::getMass2() const {
   return mass2 ;
 }
 
-Vector2 Spring::getForce() const {
+Vector3 Spring::getForce() const {
   // mass information
-  Vector2 x1 = mass1 -> getPosition();
-  Vector2 x2 = mass2 -> getPosition();
-  Vector2 v1 = mass1 -> getVelocity();
-  Vector2 v2 = mass2 -> getVelocity();
+  Vector3 x1 = mass1 -> getPosition();
+  Vector3 x2 = mass2 -> getPosition();
+  Vector3 v1 = mass1 -> getVelocity();
+  Vector3 v2 = mass2 -> getVelocity();
 
   // spring information
   double l = getLength();                   // spring length
-  Vector2 u12 = 1/l * (x2 - x1);            // spring direction
-  Vector2 v12 = dot((v2 - v1), u12) * u12;  // contraction/expansion speed in spring direction
+  Vector3 u12 = 1/l * (x2 - x1);            // spring direction
+  Vector3 v12 = dot((v2 - v1), u12) * u12;  // contraction/expansion speed in spring direction
   
   // forces
-  Vector2 F1 = stiffness * (l - naturalLength) * u12;
-  Vector2 F2 = damping * v12;
-  Vector2 F = F1 + F2;
+  Vector3 F1 = stiffness * (l - naturalLength) * u12;
+  Vector3 F2 = damping * v12;
+  Vector3 F = F1 + F2;
 
   return F ;
 }
 
 double Spring::getLength() const {
-  Vector2 u = mass2->getPosition() - mass1->getPosition() ;
+  Vector3 u = mass2->getPosition() - mass1->getPosition() ;
   return u.norm() ;
 }
 
@@ -203,8 +220,8 @@ void SpringMass::loadSample() {
   // mass
   const double mass = 1 ;
   const double radius = 0.1 ;
-  Mass * m1 = new Mass(Vector2(-0.5,0), Vector2(0, 0), mass, radius) ;
-  Mass * m2 = new Mass(Vector2(+0.5,0), Vector2(1, 2), mass, radius) ; // need destructor
+  Mass * m1 = new Mass(Vector3(-0.5,0,0), Vector3(0, 0, 0), mass, radius) ;
+  Mass * m2 = new Mass(Vector3(+0.5,0,0), Vector3(1, 2, 0), mass, radius) ; // need destructor
   
   // spring
   const double naturalLength = 0;
@@ -226,8 +243,8 @@ void SpringMass::setGravity(double _gravity) {
 void SpringMass::display() {
   // multiple mass per line
   for (std::vector<Mass *>::iterator it = begin(mass_list); it != end (mass_list); ++it) {
-    Vector2 position = (*it) -> getPosition();
-    std::cout << position.x << " " << position.y << " ";
+    Vector3 position = (*it) -> getPosition();
+    std::cout << position.x << " " << position.y << " " << position.z << " ";
   } 
   // end line
   std::cout << std::endl;
@@ -252,7 +269,7 @@ double SpringMass::getEnergy() {
 void SpringMass::step(double dt) {
 
   // set initial force 
-  Vector2 g(0, -gravity) ;
+  Vector3 g(0, -gravity, 0) ;
   for (std::vector<Mass *>::iterator it = mass_list.begin(); it != mass_list.end(); ++it) {
     (*it) -> setForce(g * (*it)->getMass());
   } 
@@ -265,8 +282,8 @@ void SpringMass::step(double dt) {
     Mass * mass2 = (*it).getMass2();
 
     // get force
-    Vector2 F1 = (*it).getForce();
-    Vector2 F2 = -1 * F1;
+    Vector3 F1 = (*it).getForce();
+    Vector3 F2 = -1 * F1;
     
     // add force to mass
     mass1 -> addForce(F1);

@@ -10,8 +10,8 @@ int main(int argc, char** argv) {
   // mass
   const double mass = 0.1 ;
   const double radius = 0.2 ;
-  Mass m1(Vector2(-0.5,0), Vector2(1, 0), mass, radius) ;
-  Mass m2(Vector2(+0.5,0), Vector2(0.5, 0), mass, radius) ;
+  Mass m1(Vector3(-0.5,0,0), Vector3(1, 0, 0), mass, radius) ;
+  Mass m2(Vector3(+0.5,0,0), Vector3(0.5, 0, 0), mass, radius) ;
   
   // spring
   const double naturalLength = 1;
