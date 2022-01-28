@@ -21,16 +21,14 @@ figures_t figures ;
 // class Drawable
 /* ---------------------------------------------------------------- */
 
-void Drawable::draw()
-{}
+void Drawable::draw() {}
 
 /* ---------------------------------------------------------------- */
 // class Figure : public Drawable
 /* ---------------------------------------------------------------- */
 
-Figure::Figure(std::string name)
- : xmin(-1), xmax(1), ymin(-1), ymax(1), glGrid(0), glCircle(0)
-{
+Figure::Figure(std::string name) : xmin(-1), xmax(1), ymin(-1), ymax(1), glGrid(0), glCircle(0) {
+  
   glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
   glutInitWindowPosition(128,128);
   glutInitWindowSize(320,256);
@@ -52,8 +50,8 @@ Figure::Figure(std::string name)
 }
 
 // A display list to show the grid
-void Figure::updateGrid()
-{
+void Figure::updateGrid() {
+  
   if (glGrid) {
     glDeleteLists(glGrid,1) ;
   }
@@ -89,8 +87,7 @@ void Figure::updateGrid()
 }
 
 
-Figure::~Figure()
-{
+Figure::~Figure() {
   if (glCircle) glDeleteLists(glCircle, 1) ;
   if (glGrid) glDeleteLists(glGrid, 1) ;
   glutDestroyWindow(id) ;
@@ -111,8 +108,7 @@ void Figure::removeDrawables(Drawable * object) {
   }
 }
 
-Figure * Figure::findByWindowId(int id)
-{
+Figure * Figure::findByWindowId(int id) {
   for(figures_t::iterator iter = figures.begin() ;
       iter != figures.end() ;
       ++ iter) {
@@ -128,8 +124,7 @@ void Figure::handleDisplay() {
   figure->draw() ;
 }
 
-void Figure::handleReshape(int width, int height)
-{
+void Figure::handleReshape(int width, int height) {
   int id = glutGetWindow() ;
   Figure * figure = Figure::findByWindowId(id) ;
   if (! figure) return ; // probably deleted but still messages in queue
@@ -138,15 +133,13 @@ void Figure::handleReshape(int width, int height)
   figure->reshape(width, height) ;
 }
 
-void Figure::makeCurrent() const
-{
+void Figure::makeCurrent() const {
   if (glutGetWindow() != id) {
     glutSetWindow(id) ;
   }
 }
 
-void Figure::reshape(int width, int height)
-{
+void Figure::reshape(int width, int height) {
   makeCurrent() ;
   if (windowWidth != width ||
       windowHeight != height) {
@@ -164,14 +157,12 @@ void Figure::reshape(int width, int height)
   glutPostRedisplay() ;
 }
 
-void Figure::update() const
-{
+void Figure::update() const {
   makeCurrent() ;
   glutPostRedisplay() ;
 }
 
-void Figure::draw()
-{
+void Figure::draw() {
   makeCurrent() ;
   glClearColor(1.0, 1.0, 1.0, 1.0) ;
   glClear(GL_COLOR_BUFFER_BIT);
@@ -188,8 +179,7 @@ void Figure::draw()
   glutSwapBuffers();
 }
 
-void Figure::drawString(double x, double y, std::string str)
-{
+void Figure::drawString(double x, double y, std::string str) {
   glRasterPos2f(x, y);
   for (char const * cstr = str.c_str() ;
        *cstr ;
@@ -198,8 +188,7 @@ void Figure::drawString(double x, double y, std::string str)
   }
 }
 
-void Figure::drawLine(double x1, double y1, double x2, double y2, double thickness)
-{
+void Figure::drawLine(double x1, double y1, double x2, double y2, double thickness) {
   glPushMatrix() ;
   glPushAttrib(GL_LINE_BIT) ;
   glLineWidth(thickness) ;
@@ -210,8 +199,7 @@ void Figure::drawLine(double x1, double y1, double x2, double y2, double thickne
   glPopAttrib() ;
 }
 
-void Figure::drawCircle(double x, double y, double r)
-{
+void Figure::drawCircle(double x, double y, double r) {
   if (glCircle == 0) {
     glCircle = glGenLists(1) ;
     glNewList(glCircle, GL_COMPILE) ;
@@ -239,8 +227,7 @@ Simulation * runningSimulation = NULL ;
 double runningSimulationTime ;
 double runningSimulationTimeStep ;
 
-void handleTimer(int id)
-{
+void handleTimer(int id) {
   if (runningSimulation) {
     double now = glutGet(GLUT_ELAPSED_TIME) / 1000.0 ;
     double dt = now - runningSimulationTime ;
@@ -260,13 +247,15 @@ void run() {
   run (NULL, 0) ;
 }
 
-void run(Simulation * simulation, double timeStep)
-{
+void run(Simulation * simulation, double timeStep) {
+  
   runningSimulationTimeStep = timeStep ;
   runningSimulationTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0 ;
+  
   if (simulation) {
     runningSimulation = simulation ;
     glutTimerFunc(0, handleTimer, 0);
   }
+  
   glutMainLoop() ;
 }

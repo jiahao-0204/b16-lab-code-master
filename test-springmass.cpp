@@ -5,8 +5,8 @@
 
 #include "springmass.h"
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
+  
   // mass
   const double mass = 0.1 ;
   const double radius = 0.2 ;

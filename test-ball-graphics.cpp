@@ -13,27 +13,24 @@
 /* ---------------------------------------------------------------- */
 class BallDrawable : public Ball, public Drawable {
 /* ---------------------------------------------------------------- */
-private:
-  Figure figure ;
+  private:
+    Figure figure ;
 
-public:
-  BallDrawable()
-  : figure("Bouncing ball")
-  {
-    figure.addDrawable(this) ;
-  }
+  public:
+    BallDrawable() : figure("Bouncing ball") {
+      figure.addDrawable(this) ;
+    }
 
-  void draw() {
-    figure.drawCircle(x,y,r) ;
-  }
+    void draw() {
+      figure.drawCircle(x,y,r) ;
+    }
 
-  void display() {
-    figure.update() ;
-  }
+    void display() {
+      figure.update() ;
+    }
 } ;
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
   glutInit(&argc,argv) ;
   const double dt = 1/60.0 ;
   BallDrawable ball ;
