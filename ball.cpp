@@ -35,3 +35,20 @@ void Ball::step(double dt) {
 void Ball::display() {
   std::cout<<x<<" "<<y<<std::endl ;
 }
+
+
+double Ball::GetX() const {
+  return x;
+}
+
+double Ball::GetY() const {
+  return y;
+}
+
+void Ball::SetX(double _x) {
+  x = _x;
+}
+
+void Ball::SetY(double _y) {
+  y = _y;
+}

@@ -14,6 +14,10 @@ class Ball : public Simulation {
     Ball(double _x = 0, double _y = 0, double _vx = 0.3, double _vy = -0.1) ;
     void step(double dt) ;
     void display() ;
+    double GetX() const;
+    double GetY() const;
+    void SetX(double _x);
+    void SetY(double _y);
 
   protected:
     // Data members
