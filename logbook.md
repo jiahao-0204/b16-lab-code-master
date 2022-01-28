@@ -4,21 +4,20 @@
 - the initial state can be found from the ball.cpp implementation file.
 - r(0.1), x(0), y(0), vx(0.3), vy(-0.1), g(9.8), m(1), xmin(-1), xmax(1), ymin(-1), ymax(1)
 - the implementation uses initialization list such that constant variables can be initialized.
-- although there are no constant variables, gravity however, is a constant and maybe better if done so. 
-
+- although there are no constant variables, gravity can be set as a constant, as it is unlikely to change once simulation started.
 
 
 **How does display() prints information on the screen?**
+- through the use of ostream 'cout << '.
 - the display output x followed by y, for example: '10 20'. 
-- this is achieved through the use of ostream 'cout << '.
 
 
 **The ball is constrained to bounce in the box [−1, 1] × [−1, 1]. How is this handled by the integrator implemented in step()? Is the total (kinetic + potential) energy of the ball conserved by this integrator?**
-- the integrator integrates position from velocity if the ball is within bound, if outside bound, velocity vector would simply flip its direction, mimicing a bound action.
-- total energy would be conserved, since only the sign of velocity is changed, the magnitude which represents the kinetic energy is unchanged.
+- the integrator integrates position from velocity and acceleration if the ball is within bound, if outside bound, velocity vector would simply flip its direction, mimic a bound action.
+- total energy would be conserved, since no damping action.
 
 
-**Now look at test-ball.cpp and answer the following question: • What do you expect the output of your program to be?**
+**Now look at test-ball.cpp and answer the following question: What do you expect the output of your program to be?**
 - it would be a stream of rows of x and y, for 100 lines.
 
 
