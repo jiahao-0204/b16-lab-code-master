@@ -76,6 +76,8 @@
 - type safe language is really really good. it indicates an error as soon as it is typed. this stops the error from happening!
 - can check if energy is conserved to see if simulation is running correctly
 - visualization in MATLAB shows the ball bouncing higher and higher, something is wrong
+- the error of increasing energy is because, 1/2 returns an integer which is 0, 1.0/2.0 returns 0.5. the former equation result in incorrect calculation of end position as well as incorrect kinetic energy.
+
 
 
 # Task 10: Understanding interfaces.
@@ -115,3 +117,17 @@
 - BallDrawable() is the constructor of this class
 - draw() calls the function in Figure to draw in figure. 
 - display() calls the update() function in figure to update the drawing. 
+
+
+
+# Task 21: Compute and display the energy of the spring-mass system.
+
+**What happens to the energy as the simulation progresses? Why?**
+- initially my implementation was incorrect. I used 1/2 instead of 1.0/2.0 when calculating kinetic energy as well as end position, this results in an fluctuating total energy (since kinetic is zero due to 1/2), and the mass is bouncing higher and higher (since end position formula is incorrect )
+- after fixing this issue, the total energy accounting for the mass and the spring remains constant, when set damping equals to zero. for non-zero damping in the spring, the total energy keeps decreasing?
+
+**Now set the damping factor of the spring to zero. What happens now to the energy? Is this result correct? If not, what may be the problem?**
+- answered above.
+
+
+
