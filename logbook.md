@@ -124,7 +124,9 @@
 
 **What happens to the energy as the simulation progresses? Why?**
 - initially my implementation was incorrect. I used 1/2 instead of 1.0/2.0 when calculating kinetic energy as well as end position, this results in an fluctuating total energy (since kinetic is zero due to 1/2), and the mass is bouncing higher and higher (since end position formula is incorrect )
-- after fixing this issue, the total energy accounting for the mass and the spring remains constant, when set damping equals to zero. for non-zero damping in the spring, the total energy keeps decreasing?
+- after fixing this issue, the total energy accounting for the mass and the spring remains constant, when damping is set to zero. for non-zero damping in the spring, the total energy keeps decreasing. 
+- there is however, a slight increase in the total energy. investigation shows this increase in energy occurs from the potential energy of springs. may be numerical error
+
 
 **Now set the damping factor of the spring to zero. What happens now to the energy? Is this result correct? If not, what may be the problem?**
 - answered above.
