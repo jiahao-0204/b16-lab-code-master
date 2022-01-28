@@ -63,5 +63,10 @@
         "typeinfo": "cpp",
         "unordered_map": "cpp",
         "utility": "cpp"
-    }
+    },
+    "cSpell.words": [
+        "rmax",
+        "rmin",
+        "Vedaldi"
+    ]
 }
