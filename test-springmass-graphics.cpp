@@ -10,9 +10,8 @@
 #include <sstream>
 #include <iomanip>
 
-/* ---------------------------------------------------------------- */
+
 class SpringMassDrawable : public SpringMass, public Drawable {
-/* ---------------------------------------------------------------- */
 
   private:
     Figure figure ;
@@ -70,8 +69,9 @@ class SpringMassDrawable : public SpringMass, public Drawable {
     void display() {
       figure.update() ;
     }
-
 } ;
+
+
 
 int main(int argc, char** argv) {
   // GLUT
@@ -81,8 +81,8 @@ int main(int argc, char** argv) {
   SpringMassDrawable springmass;
 
   springmass.loadSample();
-
-  run(&springmass, 1/120.0);
+  
+  run(&springmass, 1.0/240.0);
 
   // return 
   return 0 ;

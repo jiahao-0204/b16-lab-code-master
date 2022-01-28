@@ -46,40 +46,39 @@ double Mass::getMass() const {
 }
 
 double Mass::getEnergy(double gravity) const {
-  double energy = 0;
 
   // potential energy
-  double height = position.y - ymin;  
-  energy += mass * gravity * height ;
-
+  double potential = mass * gravity * position.y;
+  
   // kinetic energy 
-  energy += 1/2 * mass * velocity.norm2();
+  double kinetic = 0.5 * mass * velocity.norm2();
 
-  return energy;
+  // total energy
+  double total = potential + kinetic;
+
+  return total;
 
 }
 
 void Mass::step(double dt) {
+  
   // new position and velocity
-  Vector2 position_pending = position + velocity * dt; //  + 1/2 * force / mass * dt * dt 
-  Vector2 velocity_pending = velocity + force / mass * dt; 
+  // assuming constant acceleration
+  Vector2 end_position = position + velocity * dt + 0.5 * force / mass * dt * dt; 
+  Vector2 end_velocity = velocity + force / mass * dt; 
 
   // x direction
-  if (xmin <= position_pending.x - radius && position_pending.x + radius <= xmax) {
-
-    position.x = position_pending.x;
-    velocity.x = velocity_pending.x;
-
+  if (xmin <= end_position.x - radius && end_position.x + radius <= xmax) {
+    position.x = end_position.x;
+    velocity.x = end_velocity.x;
   } else {
-
     velocity.x = - velocity.x;
-
   }
 
   // y direction
-  if (ymin <= position_pending.y - radius && position_pending.y + radius <= ymax) {
-    position.y = position_pending.y;
-    velocity.y = velocity_pending.y;
+  if (ymin <= end_position.y - radius && end_position.y + radius <= ymax) {
+    position.y = end_position.y;
+    velocity.y = end_velocity.y;
   } else {
     velocity.y = - velocity.y;
   }
@@ -205,10 +204,10 @@ void SpringMass::loadSample() {
   const double mass = 1 ;
   const double radius = 0.1 ;
   Mass * m1 = new Mass(Vector2(-0.5,0), Vector2(0, 0), mass, radius) ;
-  Mass * m2 = new Mass(Vector2(+0.5,0), Vector2(0, 0), mass, radius) ; // need destructor
+  Mass * m2 = new Mass(Vector2(+0.5,0), Vector2(1, 2), mass, radius) ; // need destructor
   
   // spring
-  const double naturalLength = 0.5;
+  const double naturalLength = 0;
   const double stiff = 0;
   const double damping = 0;
   Spring spring1(m1, m2, naturalLength, stiff, damping) ;
