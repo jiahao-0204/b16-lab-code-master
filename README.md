@@ -2,6 +2,6 @@
 
 Code and report for b16 Software Engineering Lab.
 
-Created from
+Created using
 - VSCode
 - Curio (Zengobi)
